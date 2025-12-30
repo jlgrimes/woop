@@ -1,5 +1,6 @@
 import { ItemGroup } from '@/components/ui/item';
 import { WoopInput } from '@/components/woop-input';
+import { WoopProvider } from '@/components/woop-provider';
 import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
 import { Button } from '@/components/ui/button';
@@ -21,8 +22,16 @@ export default async function Home() {
     revalidatePath('/');
   }
 
+  async function addWoop(text: string) {
+    'use server';
+    if (!text.trim()) return;
+    await redis.lpush(ip, text);
+    revalidatePath('/');
+  }
+
   return (
-    <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
+    <WoopProvider addWoop={addWoop}>
+      <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
       <main className='flex p-8 min-h-screen w-full max-w-3xl flex-col items-center justify-between sm:items-start'>
         <div className='w-full flex flex-col gap-2'>
           <div>
@@ -62,6 +71,7 @@ export default async function Home() {
           </form>
         </div>
       </main>
-    </div>
+      </div>
+    </WoopProvider>
   );
 }

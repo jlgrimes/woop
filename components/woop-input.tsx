@@ -13,6 +13,7 @@ export function WoopInput() {
       placeholder="Add a woop"
       minRows={1}
       maxRows={6}
+      autoFocus
       onKeyDown={(e) => {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
