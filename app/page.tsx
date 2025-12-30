@@ -1,5 +1,5 @@
 import { ItemGroup } from '@/components/ui/item';
-import { Input } from '@/components/ui/input';
+import { WoopInput } from '@/components/woop-input';
 import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,7 @@ export default async function Home() {
               revalidatePath('/');
             }}
           >
-            <Input name='woop' placeholder='Add a woop' />
+            <WoopInput />
             <Button type='submit'>Add</Button>
           </form>
         </div>
