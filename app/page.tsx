@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
 import { Button } from '@/components/ui/button';
 import { Woop } from '@/components/woop';
+import { revalidatePath } from 'next/cache';
 
 export default async function Home() {
   const headersList = await headers();
@@ -33,6 +34,7 @@ export default async function Home() {
               const woop = formData.get('woop');
               if (!woop) return;
               await redis.lpush(ip, woop as string);
+              revalidatePath('/');
             }}
           >
             <Input name='woop' placeholder='Add a woop' />

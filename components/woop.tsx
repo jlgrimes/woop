@@ -1,6 +1,6 @@
 'use client';
 
-import { Item, ItemContent, ItemTitle } from './ui/item';
+import { Item, ItemContent } from './ui/item';
 
 export function Woop({ woop }: { woop: string }) {
   return (
@@ -10,9 +10,7 @@ export function Woop({ woop }: { woop: string }) {
       variant='outline'
       size='sm'
     >
-      <ItemContent>
-        <ItemTitle>{woop}</ItemTitle>
-      </ItemContent>
+      <ItemContent>{woop}</ItemContent>
     </Item>
   );
 }
