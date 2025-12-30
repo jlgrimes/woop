@@ -9,7 +9,6 @@ interface KeyboardShortcutsProps {
 
 const shortcuts = [
   { key: "V", description: "Paste & add woop" },
-  { key: "1-9", description: "Copy nth woop" },
 ];
 
 export function KeyboardShortcuts({ children, onPaste }: KeyboardShortcutsProps) {
