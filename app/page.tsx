@@ -40,6 +40,19 @@ export default async function Home() {
               {ip}
             </h2>
           </div>
+          <form
+            className='flex gap-2 w-full'
+            action={async formData => {
+              'use server';
+              const woop = formData.get('woop');
+              if (!woop) return;
+              await redis.lpush(ip, woop as string);
+              revalidatePath('/');
+            }}
+          >
+            <WoopInput />
+            <Button type='submit'>Add</Button>
+          </form>
           <ItemGroup className='gap-2'>
             {woops.map((woop, idx) => (
               <Woop key={idx} woop={woop} removeWoop={removeWoop} />
@@ -54,21 +67,6 @@ export default async function Home() {
               </p>
             </div>
           )}
-        </div>
-        <div className='w-full'>
-          <form
-            className='flex gap-2 w-full'
-            action={async formData => {
-              'use server';
-              const woop = formData.get('woop');
-              if (!woop) return;
-              await redis.lpush(ip, woop as string);
-              revalidatePath('/');
-            }}
-          >
-            <WoopInput />
-            <Button type='submit'>Add</Button>
-          </form>
         </div>
       </main>
       </div>
