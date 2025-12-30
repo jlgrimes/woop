@@ -15,6 +15,12 @@ export default async function Home() {
 
   const woops = await redis.lrange(ip, 0, -1);
 
+  async function removeWoop(value: string) {
+    'use server';
+    await redis.lrem(ip, 1, value);
+    revalidatePath('/');
+  }
+
   return (
     <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
       <main className='flex p-8 min-h-screen w-full max-w-3xl flex-col items-center justify-between sm:items-start'>
@@ -22,7 +28,7 @@ export default async function Home() {
           <h1 className='text-2xl font-bold'>{ip}</h1>
           <ItemGroup className='gap-2'>
             {woops.map((woop, idx) => (
-              <Woop key={idx} woop={woop} />
+              <Woop key={idx} woop={woop} removeWoop={removeWoop} />
             ))}
           </ItemGroup>
         </div>
