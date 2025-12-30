@@ -1,6 +1,8 @@
 'use client';
 
-import { Item, ItemContent } from './ui/item';
+import { Item, ItemContent, ItemActions } from './ui/item';
+import { CornerDownLeft, Delete } from 'lucide-react';
+
 export function Woop({
   woop,
   removeWoop,
@@ -24,7 +26,21 @@ export function Woop({
       size='sm'
       tabIndex={0}
     >
-      <ItemContent>{woop}</ItemContent>
+      <ItemContent className='whitespace-pre-wrap'>{woop}</ItemContent>
+      <ItemActions className='opacity-0 group-focus/item:opacity-100 transition-opacity duration-150 gap-3'>
+        <div className='flex items-center gap-1 text-muted-foreground'>
+          <span className='text-xs'>Copy</span>
+          <kbd className='p-1 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700'>
+            <CornerDownLeft className='size-3' />
+          </kbd>
+        </div>
+        <div className='flex items-center gap-1 text-muted-foreground'>
+          <span className='text-xs'>Delete</span>
+          <kbd className='p-1 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700'>
+            <Delete className='size-3' />
+          </kbd>
+        </div>
+      </ItemActions>
     </Item>
   );
 }
