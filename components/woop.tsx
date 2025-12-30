@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Item, ItemContent, ItemActions } from './ui/item';
 import { CornerDownLeft, Delete, Check } from 'lucide-react';
 
@@ -12,6 +12,8 @@ export function Woop({
   removeWoop: (value: string) => Promise<void>;
 }) {
   const [copied, setCopied] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const itemRef = useRef<HTMLDivElement>(null);
 
   const onCopy = () => {
     navigator.clipboard.writeText(woop);
@@ -19,16 +21,37 @@ export function Woop({
     setTimeout(() => setCopied(false), 1500);
   };
 
+  const onDelete = () => {
+    const next = itemRef.current?.nextElementSibling as HTMLElement;
+    const prev = itemRef.current?.previousElementSibling as HTMLElement;
+    setDeleting(true);
+    removeWoop(woop);
+    (next ?? prev)?.focus();
+  };
+
   return (
     <Item
-      className='pointer-events-auto'
+      ref={itemRef}
+      className={`pointer-events-auto transition-all duration-75 ${
+        deleting ? 'opacity-0 scale-95' : ''
+      }`}
       onClick={onCopy}
       onKeyDown={e => {
         if (e.key === 'Enter') {
           onCopy();
         }
         if (e.key === 'Backspace') {
-          removeWoop(woop);
+          onDelete();
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = (e.currentTarget.nextElementSibling as HTMLElement);
+          next?.focus();
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = (e.currentTarget.previousElementSibling as HTMLElement);
+          prev?.focus();
         }
       }}
       variant='outline'

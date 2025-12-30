@@ -55,7 +55,7 @@ export default async function Home() {
           </form>
           <ItemGroup className='gap-2'>
             {woops.map((woop, idx) => (
-              <Woop key={idx} woop={woop} removeWoop={removeWoop} />
+              <Woop key={`${woop}-${idx}`} woop={woop} removeWoop={removeWoop} />
             ))}
           </ItemGroup>
           {woops.length === 0 && (
