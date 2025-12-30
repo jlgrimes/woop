@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# woop
 
-## Getting Started
+**woop.foo** - Copy here, paste there. Instantly share text and files across your devices.
 
-First, run the development server:
+## What is woop?
+
+woop is a dead-simple clipboard sharing tool. It uses your public IP address as a key to store and retrieve text snippets via Redis. Open woop on any device on your network, and your woops are there waiting.
+
+## Principles
+
+- **Blazing fast** - Load and operations are instant. Redis-backed storage ensures sub-millisecond lookups.
+- **Minimal** - Only what is needed on the page. No clutter, no distractions.
+- **Functional** - Every feature is intentionally programmed. Nothing superfluous.
+- **Keyboard-navigatable** - Simple keyboard actions navigate the entire site. You shouldn't need to lift your mouse to get your text.
+
+## How it works
+
+1. Visit woop.foo
+2. Your public IP is detected automatically
+3. Type text and hit Add (or press Enter)
+4. Click any woop to copy it to your clipboard
+5. Open woop on another device on your network - your woops are there
+
+## Keyboard shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Tab` / `Shift+Tab` | Navigate between woops |
+| `Enter` | Copy focused woop to clipboard |
+| `Backspace` | Delete focused woop |
+
+## Tech stack
+
+- **Next.js 16** with App Router and Server Actions
+- **React 19** with React Compiler
+- **Redis** via IORedis for blazing fast storage
+- **Tailwind CSS 4** for minimal styling
+- **TypeScript** throughout
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 18+
+- Redis instance (local or hosted)
+
+### Setup
 
 ```bash
+# Install dependencies
+npm install
+
+# Set your Redis URL
+export REDIS_URL="redis://localhost:6379"
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to start wooping.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Description |
+|----------|-------------|
+| `REDIS_URL` | Redis connection string (required) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
