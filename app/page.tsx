@@ -1,8 +1,9 @@
-import { Item, ItemGroup } from '@/components/ui/item';
+import { ItemGroup } from '@/components/ui/item';
 import { Input } from '@/components/ui/input';
 import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
 import { Button } from '@/components/ui/button';
+import { Woop } from '@/components/woop';
 
 export default async function Home() {
   const headersList = await headers();
@@ -16,33 +17,27 @@ export default async function Home() {
   return (
     <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
       <main className='flex p-8 min-h-screen w-full max-w-3xl flex-col items-center justify-between sm:items-start'>
-        <ItemGroup>
-          {woops.map((woop, idx) => (
-            <Item key={idx} className='cursor-pointer'>
-              {woop}
-            </Item>
-          ))}
-        </ItemGroup>
-        <div>
+        <div className='w-full flex flex-col gap-2'>
+          <h1 className='text-2xl font-bold'>{ip}</h1>
+          <ItemGroup className='gap-2'>
+            {woops.map((woop, idx) => (
+              <Woop key={idx} woop={woop} />
+            ))}
+          </ItemGroup>
+        </div>
+        <div className='w-full'>
           <form
             className='flex gap-2 w-full'
             action={async formData => {
               'use server';
               const woop = formData.get('woop');
-              console.log(woop);
               if (!woop) return;
               await redis.lpush(ip, woop as string);
             }}
           >
-            <Input
-              name='woop'
-              className='p-2'
-              type='text'
-              placeholder='Add a woop'
-            />
-            <Button type='submit'>Add woop</Button>
+            <Input name='woop' placeholder='Add a woop' />
+            <Button type='submit'>Add</Button>
           </form>
-          <h1 className='text-2xl font-bold'>{ip}</h1>
         </div>
       </main>
     </div>
