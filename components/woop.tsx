@@ -6,10 +6,12 @@ import { CornerDownLeft, Delete, Check } from 'lucide-react';
 
 export function Woop({
   woop,
+  encryptedValue,
   removeWoop,
 }: {
   woop: string;
-  removeWoop: (value: string) => Promise<void>;
+  encryptedValue: string;
+  removeWoop: (encryptedValue: string) => Promise<void>;
 }) {
   const [copied, setCopied] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -25,7 +27,7 @@ export function Woop({
     const next = itemRef.current?.nextElementSibling as HTMLElement;
     const prev = itemRef.current?.previousElementSibling as HTMLElement;
     setDeleting(true);
-    removeWoop(woop);
+    removeWoop(encryptedValue);
     (next ?? prev)?.focus();
   };
 
