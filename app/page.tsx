@@ -1,12 +1,12 @@
-import { ItemGroup } from '@/components/ui/item';
 import { WoopProvider } from '@/components/woop-provider';
 import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
-import { Woop } from '@/components/woop';
 import { revalidatePath } from 'next/cache';
 import { hashIP, encrypt, decrypt } from '@/lib/crypto';
 import { Footer } from '@/components/ui/footer';
 import { WoopForm } from '@/components/woop-form';
+import { WoopList } from '@/components/woop-list';
+import { EmptyState } from '@/components/empty-state';
 
 const SELF_DESTRUCT_PREFIX = 'SD:';
 
@@ -63,25 +63,10 @@ export default async function Home() {
               </h2>
             </div>
             <WoopForm />
-            <ItemGroup className='gap-2'>
-              {woops.map((woop, idx) => (
-                <Woop
-                  key={`${woop.encryptedValue}-${idx}`}
-                  woop={woop.text}
-                  encryptedValue={woop.encryptedValue}
-                  selfDestructing={woop.selfDestructing}
-                  removeWoop={removeWoop}
-                />
-              ))}
-            </ItemGroup>
-            {woops.length === 0 && (
-              <div className='text-sm text-muted-foreground'>
-                <p>You have no woops.</p>
-                <p>
-                  Access woops of text from your devices on this network. Try it
-                  out!
-                </p>
-              </div>
+            {woops.length > 0 ? (
+              <WoopList woops={woops} removeWoop={removeWoop} />
+            ) : (
+              <EmptyState />
             )}
           </div>
           <Footer />
