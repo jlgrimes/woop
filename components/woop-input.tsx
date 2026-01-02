@@ -1,26 +1,37 @@
-"use client";
+'use client';
 
-import { AutosizeTextarea } from "@/components/ui/autosize-textarea";
-import { useRef } from "react";
+import { AutosizeTextarea } from '@/components/ui/autosize-textarea';
+import { forwardRef, useRef, useImperativeHandle } from 'react';
 
-export function WoopInput() {
-  const ref = useRef<HTMLTextAreaElement>(null);
+export interface WoopInputHandle {
+  getValue: () => string;
+}
+
+export const WoopInput = forwardRef<WoopInputHandle>(function WoopInput(
+  _props,
+  ref
+) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    getValue: () => textareaRef.current?.value ?? '',
+  }));
 
   return (
     <AutosizeTextarea
-      ref={ref}
-      name="woop"
-      placeholder="Add a woop"
+      ref={textareaRef}
+      name='woop'
+      placeholder='Add a woop'
       rows={1}
       minRows={1}
       maxRows={6}
       autoFocus
-      onKeyDown={(e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
-          ref.current?.form?.requestSubmit();
+          textareaRef.current?.form?.requestSubmit();
         }
       }}
     />
   );
-}
+});

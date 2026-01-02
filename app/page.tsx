@@ -1,13 +1,14 @@
 import { ItemGroup } from '@/components/ui/item';
-import { WoopInput } from '@/components/woop-input';
 import { WoopProvider } from '@/components/woop-provider';
 import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
-import { Button } from '@/components/ui/button';
 import { Woop } from '@/components/woop';
 import { revalidatePath } from 'next/cache';
 import { hashIP, encrypt, decrypt } from '@/lib/crypto';
 import { Footer } from '@/components/ui/footer';
+import { WoopForm } from '@/components/woop-form';
+
+const SELF_DESTRUCT_PREFIX = 'SD:';
 
 export default async function Home() {
   const headersList = await headers();
@@ -19,10 +20,18 @@ export default async function Home() {
   const hashedIP = hashIP(ip);
   const encryptedWoops = await redis.lrange(hashedIP, 0, -1);
   // Create tuples of [decrypted, encrypted] so we can display text but delete by encrypted value
-  const woops = encryptedWoops.map(encrypted => ({
-    text: decrypt(encrypted, ip),
-    encryptedValue: encrypted,
-  }));
+  const woops = encryptedWoops.map(encrypted => {
+    const decrypted = decrypt(encrypted, ip);
+    const isSelfDestructing = decrypted.startsWith(SELF_DESTRUCT_PREFIX);
+    const text = isSelfDestructing
+      ? decrypted.slice(SELF_DESTRUCT_PREFIX.length)
+      : decrypted;
+    return {
+      text,
+      encryptedValue: encrypted,
+      selfDestructing: isSelfDestructing,
+    };
+  });
 
   async function removeWoop(encryptedValue: string) {
     'use server';
@@ -32,11 +41,12 @@ export default async function Home() {
     revalidatePath('/');
   }
 
-  async function addWoop(text: string) {
+  async function addWoop(text: string, selfDestructing?: boolean) {
     'use server';
     if (!text.trim()) return;
     const hashedKey = hashIP(ip);
-    const encryptedText = encrypt(text, ip);
+    const textToStore = selfDestructing ? `${SELF_DESTRUCT_PREFIX}${text}` : text;
+    const encryptedText = encrypt(textToStore, ip);
     await redis.lpush(hashedKey, encryptedText);
     revalidatePath('/');
   }
@@ -52,27 +62,14 @@ export default async function Home() {
                 {ip}
               </h2>
             </div>
-            <form
-              className='flex gap-2 w-full'
-              action={async formData => {
-                'use server';
-                const woop = formData.get('woop');
-                if (!woop) return;
-                const hashedKey = hashIP(ip);
-                const encryptedText = encrypt(woop as string, ip);
-                await redis.lpush(hashedKey, encryptedText);
-                revalidatePath('/');
-              }}
-            >
-              <WoopInput />
-              <Button type='submit'>Add</Button>
-            </form>
+            <WoopForm />
             <ItemGroup className='gap-2'>
               {woops.map((woop, idx) => (
                 <Woop
                   key={`${woop.encryptedValue}-${idx}`}
                   woop={woop.text}
                   encryptedValue={woop.encryptedValue}
+                  selfDestructing={woop.selfDestructing}
                   removeWoop={removeWoop}
                 />
               ))}
