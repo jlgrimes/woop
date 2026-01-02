@@ -87,7 +87,7 @@ export function Woop({
             <ItemContent className='whitespace-pre-wrap'>
               {woop}
             </ItemContent>
-            <ItemActions className='opacity-0 group-hover/item:opacity-100 group-focus/item:opacity-100 transition-opacity duration-150 gap-3'>
+            <ItemActions className='opacity-0 group-hover/item:opacity-100 transition-opacity duration-150 gap-3'>
               {selfDestructing && (
                 <div className='flex items-center gap-1 text-orange-500'>
                   <ShieldAlert className='size-3' />
