@@ -4,11 +4,11 @@ import Link from 'next/link';
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuContent,
 } from '@/components/ui/navigation-menu';
+import { AnimatedNavLink } from './animated-nav-link';
 import { TerminalIcon } from './ui/terminal';
 import { FileStackIcon } from './ui/file-stack';
 import { ShieldCheckIcon } from './ui/shield-check';
@@ -26,28 +26,22 @@ export function Header() {
             <NavigationMenuContent>
               <ul className="w-36">
                 <li>
-                  <NavigationMenuLink asChild>
-                    <Link href="/about" className="flex-row items-center">
-                      <FileStackIcon />
-                      About
-                    </Link>
-                  </NavigationMenuLink>
+                  <AnimatedNavLink href="/about">
+                    <FileStackIcon />
+                    About
+                  </AnimatedNavLink>
                 </li>
                 <li>
-                  <NavigationMenuLink asChild>
-                    <Link href="/cli" className="flex-row items-center">
-                      <TerminalIcon />
-                      CLI
-                    </Link>
-                  </NavigationMenuLink>
+                  <AnimatedNavLink href="/cli">
+                    <TerminalIcon />
+                    CLI
+                  </AnimatedNavLink>
                 </li>
                 <li>
-                  <NavigationMenuLink asChild>
-                    <Link href="/security" className="flex-row items-center">
-                      <ShieldCheckIcon />
-                      Security
-                    </Link>
-                  </NavigationMenuLink>
+                  <AnimatedNavLink href="/security">
+                    <ShieldCheckIcon />
+                    Security
+                  </AnimatedNavLink>
                 </li>
               </ul>
             </NavigationMenuContent>
