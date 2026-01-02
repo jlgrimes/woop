@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Woop } from '@/components/woop';
 import { revalidatePath } from 'next/cache';
 import { hashIP, encrypt, decrypt } from '@/lib/crypto';
+import { Footer } from '@/components/ui/footer';
 
 export default async function Home() {
   const headersList = await headers();
@@ -86,6 +87,7 @@ export default async function Home() {
               </div>
             )}
           </div>
+          <Footer />
         </main>
       </div>
     </WoopProvider>
