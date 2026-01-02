@@ -68,7 +68,7 @@ export default async function Home() {
             <EmptyState />
           )}
         </main>
-        <div className='w-full bg-zinc-50 dark:bg-black pb-[env(safe-area-inset-bottom)]'>
+        <div className='w-full bg-zinc-50 dark:bg-black pb-8'>
           <div className='mx-auto max-w-4xl px-6 py-4 space-y-2'>
             <span className='text-xs text-muted-foreground'>Connected to <span className='font-mono'>{ip}</span></span>
             <WoopForm />
