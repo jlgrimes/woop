@@ -2,9 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { Item, ItemContent, ItemActions } from './ui/item';
-import { ShieldAlert, Trash2 } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 import { AnimatedCheck } from './animated-check';
-import { DisintegrationEffect } from './particle-explosion';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -24,56 +23,33 @@ export function Woop({
   removeWoop: (encryptedValue: string) => Promise<void>;
 }) {
   const [copied, setCopied] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [disintegrating, setDisintegrating] = useState(false);
-  const [disintegrateRect, setDisintegrateRect] = useState<DOMRect | null>(null);
   const itemRef = useRef<HTMLDivElement>(null);
 
   const onCopy = () => {
     navigator.clipboard.writeText(woop);
     setCopied(true);
 
-    if (selfDestructing && itemRef.current) {
-      const rect = itemRef.current.getBoundingClientRect();
-      setDisintegrateRect(rect);
-      setDisintegrating(true);
-      // Hide original immediately
-      itemRef.current.style.opacity = '0';
+    if (selfDestructing) {
+      removeWoop(encryptedValue);
     } else {
       setTimeout(() => setCopied(false), 1500);
     }
   };
 
-  const handleDisintegrationComplete = () => {
-    const next = itemRef.current?.nextElementSibling as HTMLElement;
-    const prev = itemRef.current?.previousElementSibling as HTMLElement;
-    removeWoop(encryptedValue);
-    (next ?? prev)?.focus();
-  };
-
   const onDelete = () => {
     const next = itemRef.current?.nextElementSibling as HTMLElement;
     const prev = itemRef.current?.previousElementSibling as HTMLElement;
-    setDeleting(true);
     removeWoop(encryptedValue);
     (next ?? prev)?.focus();
   };
 
   return (
     <>
-      {disintegrating && disintegrateRect && (
-        <DisintegrationEffect
-          rect={disintegrateRect}
-          onComplete={handleDisintegrationComplete}
-        />
-      )}
       <ContextMenu>
         <ContextMenuTrigger asChild>
           <Item
             ref={itemRef}
-            className={`pointer-events-auto transition-all duration-75 ${
-              deleting ? 'opacity-0 scale-95' : ''
-            } ${selfDestructing ? 'border-orange-300 dark:border-orange-700' : ''}`}
+            className={`pointer-events-auto ${selfDestructing ? 'border-orange-300 dark:border-orange-700' : ''}`}
             onClick={onCopy}
             onKeyDown={e => {
               if (e.key === 'Enter') {

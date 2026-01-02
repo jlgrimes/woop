@@ -3,7 +3,6 @@ import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
 import { revalidatePath } from 'next/cache';
 import { hashIP, encrypt, decrypt } from '@/lib/crypto';
-import { Footer } from '@/components/ui/footer';
 import { WoopForm } from '@/components/woop-form';
 import { WoopList } from '@/components/woop-list';
 import { EmptyState } from '@/components/empty-state';
@@ -62,24 +61,19 @@ export default async function Home() {
             <Header />
           </div>
         </header>
-        <main className='mx-auto max-w-4xl px-6 py-6 flex-1 w-full'>
-          <div className='w-full flex flex-col gap-4'>
-            <div className='space-y-1'>
-              <span className='text-xs text-muted-foreground font-mono'>{ip}</span>
-              <WoopForm />
-            </div>
-            {woops.length > 0 ? (
-              <WoopList woops={woops} removeWoop={removeWoop} />
-            ) : (
-              <EmptyState />
-            )}
-          </div>
+        <main className='mx-auto max-w-4xl px-6 py-6 flex-1 w-full overflow-auto'>
+          {woops.length > 0 ? (
+            <WoopList woops={woops} removeWoop={removeWoop} />
+          ) : (
+            <EmptyState />
+          )}
         </main>
-        <footer className='w-full border-t border-border/40'>
-          <div className='mx-auto max-w-4xl px-6 py-4'>
-            <Footer />
+        <div className='w-full bg-zinc-50 dark:bg-black'>
+          <div className='mx-auto max-w-4xl px-6 py-4 space-y-2'>
+            <span className='text-xs text-muted-foreground'>Connected to <span className='font-mono'>{ip}</span></span>
+            <WoopForm />
           </div>
-        </footer>
+        </div>
       </div>
     </WoopProvider>
   );
