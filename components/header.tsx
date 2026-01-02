@@ -9,7 +9,9 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
 } from '@/components/ui/navigation-menu';
-import { Info, Terminal, Shield } from 'lucide-react';
+import { TerminalIcon } from './ui/terminal';
+import { FileStackIcon } from './ui/file-stack';
+import { ShieldCheckIcon } from './ui/shield-check';
 
 export function Header() {
   return (
@@ -26,7 +28,7 @@ export function Header() {
                 <li>
                   <NavigationMenuLink asChild>
                     <Link href="/about" className="flex-row items-center">
-                      <Info />
+                      <FileStackIcon />
                       About
                     </Link>
                   </NavigationMenuLink>
@@ -34,7 +36,7 @@ export function Header() {
                 <li>
                   <NavigationMenuLink asChild>
                     <Link href="/cli" className="flex-row items-center">
-                      <Terminal />
+                      <TerminalIcon />
                       CLI
                     </Link>
                   </NavigationMenuLink>
@@ -42,7 +44,7 @@ export function Header() {
                 <li>
                   <NavigationMenuLink asChild>
                     <Link href="/security" className="flex-row items-center">
-                      <Shield />
+                      <ShieldCheckIcon />
                       Security
                     </Link>
                   </NavigationMenuLink>
