@@ -11,7 +11,7 @@ woop is a dead-simple clipboard sharing tool. It uses your public IP address as 
 - **Blazing fast** - Load and operations are instant. Redis-backed storage ensures sub-millisecond lookups.
 - **Minimal** - Only what is needed on the page. No clutter, no distractions.
 - **Functional** - Every feature is intentionally programmed. Nothing superfluous.
-- **Keyboard-navigatable** - Simple keyboard actions navigate the entire site. You shouldn't need to lift your mouse to get your text.
+- **Mouse-driven** - Hover to reveal actions, click to copy. Simple and intuitive interactions.
 
 ## How it works
 
@@ -24,14 +24,6 @@ woop is a dead-simple clipboard sharing tool. It uses your public IP address as 
 ## Data retention
 
 Woops automatically expire after **7 days** of inactivity. Each time you add a new woop, the expiration timer resets. This keeps storage clean and ensures your data doesn't persist indefinitely.
-
-## Keyboard shortcuts
-
-| Key | Action |
-|-----|--------|
-| `Tab` / `Shift+Tab` | Navigate between woops |
-| `Enter` | Copy focused woop to clipboard |
-| `Backspace` | Delete focused woop |
 
 ## Tech stack
 

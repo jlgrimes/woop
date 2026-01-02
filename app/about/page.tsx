@@ -34,23 +34,15 @@ export default function AboutPage() {
               <h2 className="font-medium">How it works</h2>
               <ol className="text-muted-foreground space-y-1 list-decimal list-inside text-sm">
                 <li>Visit woop.foo</li>
-                <li>Your public IP is detected automatically</li>
+                <li>Your public IP is detected automatically (publicly available info anyways)</li>
                 <li>Type text and hit Enter</li>
                 <li>Click any woop to copy it</li>
                 <li>Open woop on another device — your woops are there</li>
               </ol>
-            </div>
-
-            <div className="space-y-2">
-              <h2 className="font-medium">Keyboard shortcuts</h2>
-              <dl className="text-muted-foreground grid grid-cols-[auto_1fr] gap-x-4 gap-y-0.5 text-sm">
-                <dt className="font-mono text-xs">Tab</dt>
-                <dd>Navigate between woops</dd>
-                <dt className="font-mono text-xs">Enter</dt>
-                <dd>Copy focused woop</dd>
-                <dt className="font-mono text-xs">Backspace</dt>
-                <dd>Delete focused woop</dd>
-              </dl>
+              <p className="text-muted-foreground leading-relaxed pt-2">
+                You can also use the <a href="/cli" className="underline underline-offset-2 hover:text-foreground">woop CLI</a> to add a woop to your local network.
+              </p>
+              <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">npx woopfoo my super interesting note!</code>
             </div>
 
             <div className="space-y-2">
@@ -58,7 +50,7 @@ export default function AboutPage() {
               <ul className="text-muted-foreground space-y-0.5 text-sm">
                 <li><span className="text-foreground">Fast</span> — Redis-backed, sub-millisecond lookups</li>
                 <li><span className="text-foreground">Minimal</span> — Only what you need</li>
-                <li><span className="text-foreground">Keyboard-first</span> — Navigate without lifting your mouse</li>
+                <li><span className="text-foreground">Mouse-driven</span> — Hover to reveal actions, click to copy</li>
               </ul>
             </div>
 
