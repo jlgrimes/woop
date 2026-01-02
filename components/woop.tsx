@@ -59,11 +59,6 @@ export function Woop({
     (next ?? prev)?.focus();
   };
 
-  // Generate blur dots for self-destructing woops
-  const blurredContent = selfDestructing
-    ? woop.replace(/./g, '•')
-    : woop;
-
   return (
     <>
       {disintegrating && disintegrateRect && (
@@ -89,8 +84,8 @@ export function Woop({
             size='sm'
             tabIndex={0}
           >
-            <ItemContent className={`whitespace-pre-wrap ${selfDestructing ? 'blur-sm hover:blur-none transition-all duration-200' : ''}`}>
-              {blurredContent}
+            <ItemContent className='whitespace-pre-wrap'>
+              {woop}
             </ItemContent>
             <ItemActions className='opacity-0 group-hover/item:opacity-100 group-focus/item:opacity-100 transition-opacity duration-150 gap-3'>
               {selfDestructing && (
