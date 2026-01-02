@@ -55,10 +55,13 @@ export default async function Home() {
   return (
     <WoopProvider addWoop={addWoop}>
       <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
-        <main className='flex p-8 min-h-screen w-full max-w-3xl flex-col items-center justify-between sm:items-start'>
-          <div className='w-full flex flex-col gap-2'>
-            <Header ip={ip} />
-            <WoopForm />
+        <main className='flex p-6 min-h-screen w-full max-w-2xl flex-col items-center justify-between sm:items-start'>
+          <div className='w-full flex flex-col gap-4'>
+            <Header />
+            <div className='space-y-1'>
+              <span className='text-xs text-muted-foreground font-mono'>{ip}</span>
+              <WoopForm />
+            </div>
             {woops.length > 0 ? (
               <WoopList woops={woops} removeWoop={removeWoop} />
             ) : (

@@ -1,14 +1,34 @@
 'use client';
 
-export function Header({ ip }: { ip: string }) {
+import Link from 'next/link';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu';
+
+export function Header() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold flex items-center">
+    <header className="flex items-center justify-between w-full">
+      <Link href="/" className="text-base font-semibold hover:opacity-70 transition-opacity">
         woop
-      </h1>
-      <h2 className="text-xl font-semibold text-muted-foreground font-mono">
-        {ip}
-      </h2>
-    </div>
+      </Link>
+      <NavigationMenu className="-my-1.5">
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link href="/about">About</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link href="/security">Security</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </header>
   );
 }
