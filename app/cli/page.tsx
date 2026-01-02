@@ -1,5 +1,6 @@
 import { Footer } from '@/components/ui/footer';
 import { Header } from '@/components/header';
+import { Terminal } from '@/components/ui/code-block';
 
 export const metadata = {
   title: 'CLI - woop',
@@ -31,9 +32,7 @@ export default function CLIPage() {
 
             <div className="space-y-2">
               <h2 className="font-medium">Quick start</h2>
-              <pre className="bg-zinc-100 dark:bg-zinc-900 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                <code>npx woopfoo hello world</code>
-              </pre>
+              <Terminal code="npx woopfoo hello world" />
               <p className="text-muted-foreground text-xs">
                 That&apos;s it. Your text appears on woop.foo instantly.
               </p>
@@ -44,15 +43,11 @@ export default function CLIPage() {
               <div className="space-y-3">
                 <div>
                   <p className="text-muted-foreground mb-1">Without quotes:</p>
-                  <pre className="bg-zinc-100 dark:bg-zinc-900 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                    <code>npx woopfoo meeting notes from standup</code>
-                  </pre>
+                  <Terminal code="npx woopfoo meeting notes from standup" />
                 </div>
                 <div>
                   <p className="text-muted-foreground mb-1">With quotes (preserves multiple spaces):</p>
-                  <pre className="bg-zinc-100 dark:bg-zinc-900 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                    <code>npx woopfoo &quot;text with    multiple spaces&quot;</code>
-                  </pre>
+                  <Terminal code='npx woopfoo "text with    multiple spaces"' />
                 </div>
               </div>
             </div>
@@ -80,9 +75,7 @@ export default function CLIPage() {
               <p className="text-muted-foreground mb-2">
                 If you use it often, install globally for faster execution:
               </p>
-              <pre className="bg-zinc-100 dark:bg-zinc-900 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                <code>npm install -g woopfoo{'\n'}woopfoo your message here</code>
-              </pre>
+              <Terminal code={`npm install -g woopfoo\nwoopfoo your message here`} />
             </div>
           </section>
         </article>

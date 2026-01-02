@@ -1,5 +1,6 @@
 import { Footer } from '@/components/ui/footer';
 import { Header } from '@/components/header';
+import { Terminal } from '@/components/ui/code-block';
 
 export const metadata = {
   title: 'About - woop',
@@ -42,7 +43,7 @@ export default function AboutPage() {
               <p className="text-muted-foreground leading-relaxed pt-2">
                 You can also use the <a href="/cli" className="underline underline-offset-2 hover:text-foreground">woop CLI</a> to add a woop to your local network.
               </p>
-              <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">npx woopfoo my super interesting note!</code>
+              <Terminal code="npx woopfoo my super interesting note!" />
             </div>
 
             <div className="space-y-2">
