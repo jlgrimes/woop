@@ -54,13 +54,13 @@ export default async function Home() {
 
   return (
     <WoopProvider addWoop={addWoop}>
-      <div className='min-h-screen bg-zinc-50 font-sans dark:bg-black'>
+      <div className='min-h-screen bg-zinc-50 font-sans dark:bg-black flex flex-col'>
         <header className='w-full border-b border-border/40 bg-zinc-50 dark:bg-black'>
           <div className='mx-auto max-w-4xl px-6 py-3'>
             <Header />
           </div>
         </header>
-        <main className='mx-auto max-w-4xl px-6 py-6'>
+        <main className='mx-auto max-w-4xl px-6 py-6 flex-1 w-full'>
           <div className='w-full flex flex-col gap-4'>
             <div className='space-y-1'>
               <span className='text-xs text-muted-foreground font-mono'>{ip}</span>

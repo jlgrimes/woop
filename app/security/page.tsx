@@ -8,13 +8,13 @@ export const metadata = {
 
 export default function SecurityPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black">
+    <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black flex flex-col">
       <header className="w-full border-b border-border/40 bg-zinc-50 dark:bg-black">
         <div className="mx-auto max-w-4xl px-6 py-3">
           <Header />
         </div>
       </header>
-      <main className="mx-auto max-w-4xl px-6 py-6">
+      <main className="mx-auto max-w-4xl px-6 py-6 flex-1 w-full">
         <article className="space-y-6">
           <div>
             <h1 className="text-lg font-semibold">Security</h1>
