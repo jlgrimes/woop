@@ -6,8 +6,10 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  navigationMenuTriggerStyle,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
 } from '@/components/ui/navigation-menu';
+import { Info, Terminal, Shield } from 'lucide-react';
 
 export function Header() {
   return (
@@ -18,14 +20,35 @@ export function Header() {
       <NavigationMenu className="-my-1.5">
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/about">About</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/security">Security</Link>
-            </NavigationMenuLink>
+            <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="w-36">
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link href="/about" className="flex-row items-center">
+                      <Info />
+                      About
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link href="/cli" className="flex-row items-center">
+                      <Terminal />
+                      CLI
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link href="/security" className="flex-row items-center">
+                      <Shield />
+                      Security
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+              </ul>
+            </NavigationMenuContent>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
