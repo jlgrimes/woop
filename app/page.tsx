@@ -54,10 +54,14 @@ export default async function Home() {
 
   return (
     <WoopProvider addWoop={addWoop}>
-      <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
-        <main className='flex p-6 min-h-screen w-full max-w-2xl flex-col items-center justify-between sm:items-start'>
-          <div className='w-full flex flex-col gap-4'>
+      <div className='min-h-screen bg-zinc-50 font-sans dark:bg-black'>
+        <header className='w-full border-b border-border/40 bg-zinc-50 dark:bg-black'>
+          <div className='mx-auto max-w-4xl px-6 py-3'>
             <Header />
+          </div>
+        </header>
+        <main className='mx-auto max-w-4xl px-6 py-6'>
+          <div className='w-full flex flex-col gap-4'>
             <div className='space-y-1'>
               <span className='text-xs text-muted-foreground font-mono'>{ip}</span>
               <WoopForm />
@@ -68,8 +72,12 @@ export default async function Home() {
               <EmptyState />
             )}
           </div>
-          <Footer />
         </main>
+        <footer className='w-full border-t border-border/40'>
+          <div className='mx-auto max-w-4xl px-6 py-4'>
+            <Footer />
+          </div>
+        </footer>
       </div>
     </WoopProvider>
   );
