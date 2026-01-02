@@ -10,6 +10,7 @@ import { EmptyState } from '@/components/empty-state';
 import { Header } from '@/components/header';
 
 const SELF_DESTRUCT_PREFIX = 'SD:';
+const TTL_SECONDS = 7 * 24 * 60 * 60; // 7 days
 
 export default async function Home() {
   const headersList = await headers();
@@ -49,6 +50,7 @@ export default async function Home() {
     const textToStore = selfDestructing ? `${SELF_DESTRUCT_PREFIX}${text}` : text;
     const encryptedText = encrypt(textToStore, ip);
     await redis.lpush(hashedKey, encryptedText);
+    await redis.expire(hashedKey, TTL_SECONDS);
     revalidatePath('/');
   }
 

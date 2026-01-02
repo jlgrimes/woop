@@ -21,6 +21,10 @@ woop is a dead-simple clipboard sharing tool. It uses your public IP address as 
 4. Click any woop to copy it to your clipboard
 5. Open woop on another device on your network - your woops are there
 
+## Data retention
+
+Woops automatically expire after **7 days** of inactivity. Each time you add a new woop, the expiration timer resets. This keeps storage clean and ensures your data doesn't persist indefinitely.
+
 ## Keyboard shortcuts
 
 | Key | Action |

@@ -61,6 +61,14 @@ export default function AboutPage() {
                 <li><span className="text-foreground">Keyboard-first</span> — Navigate without lifting your mouse</li>
               </ul>
             </div>
+
+            <div className="space-y-2">
+              <h2 className="font-medium">Data retention</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                Woops automatically expire after 7 days of inactivity. Each time
+                you add a new woop, the timer resets.
+              </p>
+            </div>
           </section>
         </article>
       </main>

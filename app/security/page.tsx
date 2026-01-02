@@ -49,6 +49,14 @@ export default function SecurityPage() {
                 before storage. No accounts, no passwords, no tracking.
               </p>
             </div>
+
+            <div className="space-y-1">
+              <h2 className="font-medium">Auto-expiration</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                Woops automatically expire after 7 days of inactivity. Your data
+                doesn't persist indefinitely — add a new woop to reset the timer.
+              </p>
+            </div>
           </section>
 
           <section className="rounded border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20 p-3 space-y-1">
