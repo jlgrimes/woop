@@ -2,8 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { Item, ItemContent, ItemActions } from './ui/item';
-import { ShieldAlert } from 'lucide-react';
+import { ShieldAlert, MousePointerClick } from 'lucide-react';
 import { AnimatedCheck } from './animated-check';
+import { TextMorph } from './motion-primitives/text-morph';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -70,17 +71,20 @@ export function Woop({
                 </div>
               )}
               <div className='flex items-center gap-1'>
-                <span
+                <TextMorph
+                  as="span"
                   className={`text-xs transition-colors duration-150 ${
                     copied
                       ? 'text-green-600 dark:text-green-400'
                       : 'text-muted-foreground'
                   }`}
                 >
-                  {copied ? 'Copied!' : 'Click to copy'}
-                </span>
-                {copied && (
+                  {copied ? 'Copied' : 'Copy'}
+                </TextMorph>
+                {copied ? (
                   <AnimatedCheck className='text-green-600 dark:text-green-400' size={12} />
+                ) : (
+                  <MousePointerClick className='text-muted-foreground size-3' />
                 )}
               </div>
             </ItemActions>
