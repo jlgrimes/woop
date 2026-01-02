@@ -1,0 +1,13 @@
+{
+  "name": "woopfoo",
+  "version": "0.1.0",
+  "description": "Send messages to woop.foo from your terminal",
+  "bin": {
+    "woopfoo": "./index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": ["woop", "cli", "messaging"],
+  "license": "MIT"
+}
