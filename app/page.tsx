@@ -7,6 +7,7 @@ import { Footer } from '@/components/ui/footer';
 import { WoopForm } from '@/components/woop-form';
 import { WoopList } from '@/components/woop-list';
 import { EmptyState } from '@/components/empty-state';
+import { Header } from '@/components/header';
 
 const SELF_DESTRUCT_PREFIX = 'SD:';
 
@@ -56,12 +57,7 @@ export default async function Home() {
       <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
         <main className='flex p-8 min-h-screen w-full max-w-3xl flex-col items-center justify-between sm:items-start'>
           <div className='w-full flex flex-col gap-2'>
-            <div>
-              <h1 className='text-2xl font-bold'>woop.foo</h1>
-              <h2 className='text-xl font-semibold text-muted-foreground font-mono'>
-                {ip}
-              </h2>
-            </div>
+            <Header ip={ip} />
             <WoopForm />
             {woops.length > 0 ? (
               <WoopList woops={woops} removeWoop={removeWoop} />
