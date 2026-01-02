@@ -2,7 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { Item, ItemContent, ItemActions } from './ui/item';
-import { CornerDownLeft, Delete, Check, ShieldAlert } from 'lucide-react';
+import { CornerDownLeft, Delete, ShieldAlert } from 'lucide-react';
+import { AnimatedCheck } from './animated-check';
+import { DisintegrationEffect } from './particle-explosion';
 
 export function Woop({
   woop,
@@ -17,28 +19,30 @@ export function Woop({
 }) {
   const [copied, setCopied] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [exploding, setExploding] = useState(false);
+  const [disintegrating, setDisintegrating] = useState(false);
+  const [disintegrateRect, setDisintegrateRect] = useState<DOMRect | null>(null);
   const itemRef = useRef<HTMLDivElement>(null);
 
   const onCopy = () => {
     navigator.clipboard.writeText(woop);
     setCopied(true);
 
-    if (selfDestructing) {
-      // Start explosion sequence after a short delay
-      setTimeout(() => {
-        setExploding(true);
-        // Delete after explosion animation
-        setTimeout(() => {
-          const next = itemRef.current?.nextElementSibling as HTMLElement;
-          const prev = itemRef.current?.previousElementSibling as HTMLElement;
-          removeWoop(encryptedValue);
-          (next ?? prev)?.focus();
-        }, 600);
-      }, 800);
+    if (selfDestructing && itemRef.current) {
+      const rect = itemRef.current.getBoundingClientRect();
+      setDisintegrateRect(rect);
+      setDisintegrating(true);
+      // Hide original immediately
+      itemRef.current.style.opacity = '0';
     } else {
       setTimeout(() => setCopied(false), 1500);
     }
+  };
+
+  const handleDisintegrationComplete = () => {
+    const next = itemRef.current?.nextElementSibling as HTMLElement;
+    const prev = itemRef.current?.previousElementSibling as HTMLElement;
+    removeWoop(encryptedValue);
+    (next ?? prev)?.focus();
   };
 
   const onDelete = () => {
@@ -55,13 +59,18 @@ export function Woop({
     : woop;
 
   return (
-    <Item
-      ref={itemRef}
-      className={`pointer-events-auto transition-all duration-75 ${
-        deleting ? 'opacity-0 scale-95' : ''
-      } ${exploding ? 'animate-explode' : ''} ${
-        selfDestructing ? 'border-orange-300 dark:border-orange-700' : ''
-      }`}
+    <>
+      {disintegrating && disintegrateRect && (
+        <DisintegrationEffect
+          rect={disintegrateRect}
+          onComplete={handleDisintegrationComplete}
+        />
+      )}
+      <Item
+        ref={itemRef}
+        className={`pointer-events-auto transition-all duration-75 ${
+          deleting ? 'opacity-0 scale-95' : ''
+        } ${selfDestructing ? 'border-orange-300 dark:border-orange-700' : ''}`}
       onClick={onCopy}
       onKeyDown={e => {
         if (e.key === 'Enter') {
@@ -108,7 +117,7 @@ export function Woop({
             }`}
           >
             {copied ? (
-              <Check className='size-3 text-green-600 dark:text-green-400' />
+              <AnimatedCheck className='text-green-600 dark:text-green-400' size={12} />
             ) : (
               <CornerDownLeft className='size-3' />
             )}
@@ -121,6 +130,7 @@ export function Woop({
           </kbd>
         </div>
       </ItemActions>
-    </Item>
+      </Item>
+    </>
   );
 }

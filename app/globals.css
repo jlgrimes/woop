@@ -124,33 +124,45 @@
   }
 }
 
-@keyframes explode {
+/* Particle explosion effect */
+.particle-container {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 2px;
+  animation: particle-fly 0.6s ease-out forwards;
+}
+
+@keyframes particle-fly {
   0% {
-    transform: scale(1);
+    transform: translate(0, 0) rotate(0deg) scale(1);
     opacity: 1;
-  }
-  20% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  40% {
-    transform: scale(1.15) rotate(2deg);
-    opacity: 0.9;
-  }
-  60% {
-    transform: scale(0.9) rotate(-2deg);
-    opacity: 0.7;
-  }
-  80% {
-    transform: scale(0.5) rotate(5deg);
-    opacity: 0.3;
   }
   100% {
-    transform: scale(0) rotate(10deg);
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0);
     opacity: 0;
   }
 }
 
-.animate-explode {
-  animation: explode 0.6s ease-out forwards;
+.animate-shatter {
+  animation: shatter 0.3s ease-out forwards;
+}
+
+@keyframes shatter {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
 }

@@ -3,7 +3,9 @@
     "allow": [
       "Bash(cat:*)",
       "Bash(npm run build:*)",
-      "Bash(npx shadcn@latest add:*)"
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }
