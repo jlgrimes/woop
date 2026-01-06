@@ -3,7 +3,6 @@ import { Woop } from './woop';
 interface WoopItem {
   text: string;
   encryptedValue: string;
-  selfDestructing: boolean;
 }
 
 interface WoopListProps {
@@ -19,7 +18,6 @@ export function WoopList({ woops, removeWoop }: WoopListProps) {
           key={woop.encryptedValue}
           woop={woop.text}
           encryptedValue={woop.encryptedValue}
-          selfDestructing={woop.selfDestructing}
           removeWoop={removeWoop}
         />
       ))}

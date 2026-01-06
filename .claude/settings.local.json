@@ -7,7 +7,20 @@
       "Bash(npm install:*)",
       "Bash(npm uninstall:*)",
       "Bash(rm:*)",
-      "Bash(npx motion-primitives@latest add text-morph)"
+      "Bash(npx motion-primitives@latest add text-morph)",
+      "Bash(grep:*)",
+      "Bash(/Users/jaredgrimes/code/woop/components/particle-explosion.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/card.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/card-hover-effect.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/check.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/context-menu.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/dropdown-menu.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/flip-words.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/input.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/placeholders-and-vanish-input.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/text-generate-effect.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/ui/text-scramble.tsx )",
+      "Bash(/Users/jaredgrimes/code/woop/components/motion-primitives/text-morph.tsx)"
     ]
   }
 }

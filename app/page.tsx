@@ -8,9 +8,6 @@ import { WoopList } from '@/components/woop-list';
 import { EmptyState } from '@/components/empty-state';
 import { Header } from '@/components/header';
 
-const SELF_DESTRUCT_PREFIX = 'SD:';
-const TTL_SECONDS = 7 * 24 * 60 * 60; // 7 days
-
 export default async function Home() {
   const headersList = await headers();
   const ip =
@@ -20,36 +17,24 @@ export default async function Home() {
 
   const hashedIP = hashIP(ip);
   const encryptedWoops = await redis.lrange(hashedIP, 0, -1);
-  // Create tuples of [decrypted, encrypted] so we can display text but delete by encrypted value
-  const woops = encryptedWoops.map(encrypted => {
-    const decrypted = decrypt(encrypted, ip);
-    const isSelfDestructing = decrypted.startsWith(SELF_DESTRUCT_PREFIX);
-    const text = isSelfDestructing
-      ? decrypted.slice(SELF_DESTRUCT_PREFIX.length)
-      : decrypted;
-    return {
-      text,
-      encryptedValue: encrypted,
-      selfDestructing: isSelfDestructing,
-    };
-  });
+  const woops = encryptedWoops.map(encrypted => ({
+    text: decrypt(encrypted, ip),
+    encryptedValue: encrypted,
+  }));
 
   async function removeWoop(encryptedValue: string) {
     'use server';
     const hashedKey = hashIP(ip);
-    // Use the original encrypted value for deletion (matches exactly in Redis)
     await redis.lrem(hashedKey, 1, encryptedValue);
     revalidatePath('/');
   }
 
-  async function addWoop(text: string, selfDestructing?: boolean) {
+  async function addWoop(text: string) {
     'use server';
     if (!text.trim()) return;
     const hashedKey = hashIP(ip);
-    const textToStore = selfDestructing ? `${SELF_DESTRUCT_PREFIX}${text}` : text;
-    const encryptedText = encrypt(textToStore, ip);
+    const encryptedText = encrypt(text, ip);
     await redis.lpush(hashedKey, encryptedText);
-    await redis.expire(hashedKey, TTL_SECONDS);
     revalidatePath('/');
   }
 

@@ -2,42 +2,30 @@
 
 import { useState, useRef } from 'react';
 import { Item, ItemContent, ItemActions } from './ui/item';
-import { ShieldAlert, MousePointerClick } from 'lucide-react';
-import { AnimatedCheck } from './animated-check';
-import { TextMorph } from './motion-primitives/text-morph';
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from './ui/context-menu';
+import { Copy, Trash2, Check } from 'lucide-react';
+import { Button } from './ui/button';
 
 export function Woop({
   woop,
   encryptedValue,
-  selfDestructing = false,
   removeWoop,
 }: {
   woop: string;
   encryptedValue: string;
-  selfDestructing?: boolean;
   removeWoop: (encryptedValue: string) => Promise<void>;
 }) {
   const [copied, setCopied] = useState(false);
   const itemRef = useRef<HTMLDivElement>(null);
 
-  const onCopy = () => {
+  const onCopy = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     navigator.clipboard.writeText(woop);
     setCopied(true);
-
-    if (selfDestructing) {
-      removeWoop(encryptedValue);
-    } else {
-      setTimeout(() => setCopied(false), 1500);
-    }
+    setTimeout(() => setCopied(false), 1500);
   };
 
-  const onDelete = () => {
+  const onDelete = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     const next = itemRef.current?.nextElementSibling as HTMLElement;
     const prev = itemRef.current?.previousElementSibling as HTMLElement;
     removeWoop(encryptedValue);
@@ -45,57 +33,49 @@ export function Woop({
   };
 
   return (
-    <>
-      <ContextMenu>
-        <ContextMenuTrigger asChild>
-          <Item
-            ref={itemRef}
-            className={`pointer-events-auto ${selfDestructing ? 'border-orange-300 dark:border-orange-700' : ''}`}
-            onClick={onCopy}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                onCopy();
-              }
-            }}
-            variant='outline'
-            size='sm'
-            tabIndex={0}
-          >
-            <ItemContent className='whitespace-pre-wrap'>
-              {woop}
-            </ItemContent>
-            <ItemActions className='opacity-0 group-hover/item:opacity-100 transition-opacity duration-150 gap-3'>
-              {selfDestructing && (
-                <div className='flex items-center gap-1 text-orange-500'>
-                  <ShieldAlert className='size-3' />
-                </div>
-              )}
-              <div className='flex items-center gap-1'>
-                <TextMorph
-                  as="span"
-                  className={`text-xs transition-colors duration-150 ${
-                    copied
-                      ? 'text-green-600 dark:text-green-400'
-                      : 'text-muted-foreground'
-                  }`}
-                >
-                  {copied ? 'Copied' : 'Copy'}
-                </TextMorph>
-                {copied ? (
-                  <AnimatedCheck className='text-green-600 dark:text-green-400' size={12} />
-                ) : (
-                  <MousePointerClick className='text-muted-foreground size-3' />
-                )}
-              </div>
-            </ItemActions>
-          </Item>
-        </ContextMenuTrigger>
-        <ContextMenuContent>
-          <ContextMenuItem onClick={onDelete} className="text-red-600 dark:text-red-400">
-            Delete
-          </ContextMenuItem>
-        </ContextMenuContent>
-      </ContextMenu>
-    </>
+    <Item
+      ref={itemRef}
+      className='pointer-events-auto'
+      onKeyDown={e => {
+        if (e.key === 'Enter') {
+          onCopy();
+        }
+        if (e.key === 'Backspace') {
+          onDelete();
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = e.currentTarget.nextElementSibling as HTMLElement;
+          next?.focus();
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = e.currentTarget.previousElementSibling as HTMLElement;
+          prev?.focus();
+        }
+      }}
+      variant='outline'
+      size='sm'
+      tabIndex={0}
+    >
+      <ItemContent className='whitespace-pre-wrap'>{woop}</ItemContent>
+      <ItemActions className='gap-1'>
+        <Button
+          variant='ghost'
+          size='icon-sm'
+          onClick={onCopy}
+          className={copied ? 'text-green-600 dark:text-green-400' : ''}
+        >
+          {copied ? <Check className='size-4' /> : <Copy className='size-4' />}
+        </Button>
+        <Button
+          variant='ghost'
+          size='icon-sm'
+          onClick={onDelete}
+        >
+          <Trash2 className='size-4' />
+        </Button>
+      </ItemActions>
+    </Item>
   );
 }
