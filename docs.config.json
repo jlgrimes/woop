@@ -1,0 +1,66 @@
+{
+  "$schema": "./.github/docs.config.schema.json",
+  "projectName": "Woop",
+  "projectDescription": "A Redis-backed clipboard sharing app with CLI support. Uses IP addresses as keys to share text across devices on the same network.",
+
+  "targets": [
+    {
+      "output": "app/about/page.tsx",
+      "description": "About page explaining how Woop works, its principles, and key features",
+      "format": "tsx",
+      "watchPaths": [
+        "lib/*",
+        "app/page.tsx",
+        "README.md"
+      ],
+      "sourcePaths": [
+        "lib/*",
+        "app/page.tsx",
+        "app/layout.tsx",
+        "README.md",
+        "components/woop*.tsx"
+      ],
+      "instructions": "Create a Next.js page component for the About page. Include sections about: how it works (IP-based keys, encryption), key principles (no auth needed, auto-expiry), and the technology used. Use Tailwind CSS for styling. Import and use the Header and Footer components. Make it visually appealing with proper spacing."
+    },
+    {
+      "output": "app/cli/page.tsx",
+      "description": "CLI documentation page showing how to install and use the woopfoo CLI tool",
+      "format": "tsx",
+      "watchPaths": [
+        "cli/*"
+      ],
+      "sourcePaths": [
+        "cli/*",
+        "app/api/push/route.ts"
+      ],
+      "instructions": "Create a Next.js page component documenting the CLI. Show installation (npm install -g woopfoo), usage examples (echo 'text' | woop, cat file.txt | woop), and explain how it integrates with the web app. Use the Terminal component from components/ui/terminal for code examples. Import Header and Footer."
+    },
+    {
+      "output": "app/security/page.tsx",
+      "description": "Security page explaining the encryption and privacy model",
+      "format": "tsx",
+      "watchPaths": [
+        "lib/crypto.ts",
+        "lib/entropy.ts"
+      ],
+      "sourcePaths": [
+        "lib/crypto.ts",
+        "lib/entropy.ts",
+        "app/api/push/route.ts"
+      ],
+      "instructions": "Create a Next.js page component explaining security: AES-256-GCM encryption, IP-based key derivation, no authentication by design, 7-day auto-expiry. Use proper sections with clear explanations. Import Header and Footer. Make it trustworthy and informative."
+    },
+    {
+      "output": "AGENTS.md",
+      "description": "Comprehensive developer documentation for AI agents and contributors",
+      "format": "markdown",
+      "watchPaths": [
+        "lib/*",
+        "app/*",
+        "components/*",
+        "cli/*"
+      ],
+      "instructions": "Generate comprehensive developer documentation. Include: project overview, architecture, data flow diagrams (as text), component descriptions, API endpoints, security model, environment variables needed, and development setup. This is for AI agents and developers to understand the full codebase."
+    }
+  ]
+}

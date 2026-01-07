@@ -67,6 +67,40 @@ npm start
 | Variable | Description |
 |----------|-------------|
 | `REDIS_URL` | Redis connection string (required) |
+| `CLIPBOARD_SALT` | Salt for encryption key derivation (optional) |
+
+## Auto-generated documentation
+
+This project uses a GitHub Action to automatically generate documentation when PRs are created. The documentation is generated using Claude AI based on the actual codebase.
+
+### How it works
+
+1. Create/update `docs.config.json` with your documentation targets
+2. Open a PR with code changes
+3. The action analyzes changed files and regenerates relevant docs
+4. Updated docs are committed back to your PR
+
+### Configuration
+
+Edit `docs.config.json` to define what documentation to generate:
+
+```json
+{
+  "projectName": "Your Project",
+  "targets": [
+    {
+      "output": "docs/api.md",
+      "description": "API documentation for all endpoints",
+      "watchPaths": ["app/api/*"],
+      "instructions": "Generate markdown documentation for the API"
+    }
+  ]
+}
+```
+
+### Setup
+
+Add `ANTHROPIC_API_KEY` to your repository secrets to enable auto-documentation.
 
 ## License
 

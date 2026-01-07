@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Documentation Generator Config",
+  "description": "Configuration for auto-generating documentation with Claude",
+  "type": "object",
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Name of the project"
+    },
+    "projectDescription": {
+      "type": "string",
+      "description": "Brief description of what the project does"
+    },
+    "targets": {
+      "type": "array",
+      "description": "Documentation files to generate",
+      "items": {
+        "type": "object",
+        "required": ["output", "description"],
+        "properties": {
+          "output": {
+            "type": "string",
+            "description": "Path to the output file (relative to project root)"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this documentation should cover - be specific!"
+          },
+          "format": {
+            "type": "string",
+            "enum": ["markdown", "tsx", "mdx", "html"],
+            "default": "markdown",
+            "description": "Output format for the documentation"
+          },
+          "watchPaths": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Glob patterns for files that trigger regeneration when changed"
+          },
+          "sourcePaths": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Glob patterns for files to include as context when generating"
+          },
+          "template": {
+            "type": "string",
+            "description": "Optional template or structure to follow"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Additional instructions for how to generate this documentation"
+          }
+        }
+      }
+    }
+  }
+}
