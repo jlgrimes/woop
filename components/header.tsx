@@ -12,7 +12,6 @@ import { AnimatedNavLink } from './animated-nav-link';
 import { TerminalIcon } from './ui/terminal';
 import { FileStackIcon } from './ui/file-stack';
 import { ShieldCheckIcon } from './ui/shield-check';
-import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
   return (
@@ -20,9 +19,7 @@ export function Header() {
       <Link href="/" className="text-base font-semibold hover:opacity-70 transition-opacity">
         woop
       </Link>
-      <div className="flex items-center gap-1">
-        <ThemeToggle />
-        <NavigationMenu className="-my-1.5">
+      <NavigationMenu className="-my-1.5">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
@@ -51,7 +48,6 @@ export function Header() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-      </div>
     </header>
   );
 }
