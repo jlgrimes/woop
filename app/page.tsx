@@ -8,22 +8,14 @@ import { WoopList } from '@/components/woop-list';
 import { EmptyState } from '@/components/empty-state';
 import { Header } from '@/components/header';
 import { ShortcutHints } from '@/components/shortcut-hints';
+import { deleteBlobs } from '@/lib/blob';
+import type { WoopData, WoopItem, WoopFile } from '@/lib/types';
 
-interface WoopData {
-  text: string;
-  expiresAt: number;
-}
-
-interface WoopItem {
-  text: string;
-  encryptedValue: string;
-  expiresAt?: number;
-}
-
-function processWoops(encryptedWoops: string[], ip: string): { woops: WoopItem[]; expiredEncrypted: string[] } {
+function processWoops(encryptedWoops: string[], ip: string): { woops: WoopItem[]; expiredEncrypted: string[]; expiredBlobUrls: string[] } {
   const now = Date.now();
   const woops: WoopItem[] = [];
   const expiredEncrypted: string[] = [];
+  const expiredBlobUrls: string[] = [];
 
   for (const encrypted of encryptedWoops) {
     try {
@@ -35,9 +27,13 @@ function processWoops(encryptedWoops: string[], ip: string): { woops: WoopItem[]
             text: data.text,
             encryptedValue: encrypted,
             expiresAt: data.expiresAt,
+            file: data.file,
           });
         } else {
           expiredEncrypted.push(encrypted);
+          if (data.file?.url) {
+            expiredBlobUrls.push(data.file.url);
+          }
         }
       } catch {
         // Legacy format without expiration - show for backwards compatibility
@@ -51,7 +47,7 @@ function processWoops(encryptedWoops: string[], ip: string): { woops: WoopItem[]
     }
   }
 
-  return { woops, expiredEncrypted };
+  return { woops, expiredEncrypted, expiredBlobUrls };
 }
 
 export default async function Home() {
@@ -65,23 +61,28 @@ export default async function Home() {
   const encryptedWoops = await redis.lrange(hashedIP, 0, -1);
 
   // Process woops and filter expired ones
-  const { woops, expiredEncrypted } = processWoops(encryptedWoops, ip);
+  const { woops, expiredEncrypted, expiredBlobUrls } = processWoops(encryptedWoops, ip);
 
-  // Clean up expired messages
+  // Clean up expired messages and their blob files
   if (expiredEncrypted.length > 0) {
     const hashedKey = hashIP(ip);
     for (const encrypted of expiredEncrypted) {
       await redis.lrem(hashedKey, 1, encrypted);
     }
+    // Delete expired blob files from Vercel Blob storage
+    if (expiredBlobUrls.length > 0) {
+      await deleteBlobs(expiredBlobUrls);
+    }
   }
 
-  async function addWoop(text: string, expirationMinutes: number = 10) {
+  async function addWoop(text: string, expirationMinutes: number = 10, file?: WoopFile) {
     'use server';
-    if (!text.trim()) return;
+    if (!text.trim() && !file) return;
     const hashedKey = hashIP(ip);
     const woopData: WoopData = {
-      text,
+      text: text || (file ? file.name : ''),
       expiresAt: Date.now() + expirationMinutes * 60 * 1000,
+      file,
     };
     const encryptedText = encrypt(JSON.stringify(woopData), ip);
     await redis.lpush(hashedKey, encryptedText);

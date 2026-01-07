@@ -5,6 +5,7 @@ import { WoopInput } from './woop-input';
 import { AddButton } from './add-button';
 import { useWoop } from './woop-provider';
 import { ExpirationSelector } from './expiration-selector';
+import { FileUploadButton } from './file-upload-button';
 
 export function WoopForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -20,6 +21,7 @@ export function WoopForm() {
   return (
     <form ref={formRef} className='flex gap-2 w-full' action={handleSubmit}>
       <WoopInput disabled={isLoading} />
+      <FileUploadButton />
       <ExpirationSelector value={expirationMinutes} onChange={setExpirationMinutes} disabled={isLoading} />
       <AddButton />
     </form>

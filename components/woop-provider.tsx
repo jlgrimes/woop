@@ -4,9 +4,11 @@ import { createContext, useContext, useState } from 'react';
 import { KeyboardShortcuts } from './keyboard-shortcuts';
 import { useToast } from '@/hooks/use-toast';
 import type { ExpirationMinutes } from './expiration-selector';
+import type { WoopFile } from '@/lib/types';
 
 interface WoopContextValue {
   addWoop: (text: string, expirationMinutes?: number) => Promise<void>;
+  addWoopWithFile: (file: File, text?: string) => Promise<void>;
   expirationMinutes: ExpirationMinutes;
   setExpirationMinutes: (minutes: ExpirationMinutes) => void;
   isLoading: boolean;
@@ -24,7 +26,7 @@ export function useWoop() {
 
 interface WoopProviderProps {
   children: React.ReactNode;
-  addWoop: (text: string, expirationMinutes?: number) => Promise<void>;
+  addWoop: (text: string, expirationMinutes?: number, file?: WoopFile) => Promise<void>;
 }
 
 export function WoopProvider({ children, addWoop }: WoopProviderProps) {
@@ -44,8 +46,36 @@ export function WoopProvider({ children, addWoop }: WoopProviderProps) {
     }
   };
 
+  const handleAddWoopWithFile = async (file: File, text?: string) => {
+    setIsLoading(true);
+    try {
+      // Upload file to Vercel Blob
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload file');
+      }
+
+      const woopFile: WoopFile = await response.json();
+
+      // Add woop with file reference
+      await addWoop(text || file.name, expirationMinutes, woopFile);
+      toast({ title: 'File wooped!', variant: 'success', duration: 2000 });
+    } catch {
+      toast({ title: 'Failed to upload file', variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <WoopContext.Provider value={{ addWoop: handleAddWoop, expirationMinutes, setExpirationMinutes, isLoading }}>
+    <WoopContext.Provider value={{ addWoop: handleAddWoop, addWoopWithFile: handleAddWoopWithFile, expirationMinutes, setExpirationMinutes, isLoading }}>
       <KeyboardShortcuts onPaste={text => handleAddWoop(text)}>
         {children}
       </KeyboardShortcuts>

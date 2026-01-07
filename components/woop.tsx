@@ -3,20 +3,28 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Item, ItemContent, ItemActions } from './ui/item';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Download, FileIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { iconSwap } from '@/lib/animations';
 import { triggerConfetti } from '@/lib/confetti';
 import { ExpirationBadge } from './expiration-badge';
+import type { WoopFile } from '@/lib/types';
 
 interface WoopProps {
   woop: string;
   encryptedValue: string;
   expiresAt?: number;
+  file?: WoopFile;
 }
 
-export function Woop({ woop, expiresAt }: WoopProps) {
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+export function Woop({ woop, expiresAt, file }: WoopProps) {
   const [copied, setCopied] = useState(false);
   const itemRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -37,6 +45,13 @@ export function Woop({ woop, expiresAt }: WoopProps) {
     }
   };
 
+  const onDownload = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (file) {
+      window.open(file.url, '_blank');
+    }
+  };
+
   return (
     <Item
       ref={itemRef}
@@ -44,7 +59,11 @@ export function Woop({ woop, expiresAt }: WoopProps) {
       className='pointer-events-auto'
       onKeyDown={e => {
         if (e.key === 'Enter') {
-          onCopy();
+          if (file) {
+            window.open(file.url, '_blank');
+          } else {
+            onCopy();
+          }
         }
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -61,9 +80,31 @@ export function Woop({ woop, expiresAt }: WoopProps) {
       size='sm'
       tabIndex={0}
     >
-      <ItemContent className='whitespace-pre-wrap'>{woop}</ItemContent>
+      <ItemContent className='whitespace-pre-wrap'>
+        {file ? (
+          <div className='flex items-center gap-2'>
+            <FileIcon className='size-4 text-muted-foreground flex-shrink-0' />
+            <span className='font-medium'>{file.name}</span>
+            <span className='text-xs text-muted-foreground'>({formatFileSize(file.size)})</span>
+          </div>
+        ) : (
+          woop
+        )}
+      </ItemContent>
       <ItemActions className='gap-2'>
         {expiresAt && <ExpirationBadge expiresAt={expiresAt} />}
+        {file && (
+          <motion.div whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
+            <Button
+              variant='ghost'
+              size='icon-sm'
+              onClick={onDownload}
+              aria-label='Download file'
+            >
+              <Download className='size-4' />
+            </Button>
+          </motion.div>
+        )}
         <motion.div whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
           <Button
             variant='ghost'

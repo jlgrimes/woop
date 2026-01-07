@@ -1,14 +1,10 @@
 import { headers } from 'next/headers';
 import { redis } from '@/lib/redis';
 import { hashIP, encrypt } from '@/lib/crypto';
+import type { WoopData } from '@/lib/types';
 
 const TTL_SECONDS = 7 * 24 * 60 * 60; // 7 days
 const DEFAULT_EXPIRATION_MINUTES = 10;
-
-interface WoopData {
-  text: string;
-  expiresAt: number;
-}
 
 export async function POST(request: Request) {
   const headersList = await headers();

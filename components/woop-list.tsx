@@ -3,12 +3,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Woop } from './woop';
 import { staggerContainer, woopItemVariants } from '@/lib/animations';
-
-interface WoopItem {
-  text: string;
-  encryptedValue: string;
-  expiresAt?: number;
-}
+import type { WoopItem } from '@/lib/types';
 
 interface WoopListProps {
   woops: WoopItem[];
@@ -39,6 +34,7 @@ export function WoopList({ woops }: WoopListProps) {
               woop={woop.text}
               encryptedValue={woop.encryptedValue}
               expiresAt={woop.expiresAt}
+              file={woop.file}
             />
           </motion.div>
         ))}
