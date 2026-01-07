@@ -2,17 +2,14 @@
 
 import { useState, useRef } from 'react';
 import { Item, ItemContent, ItemActions } from './ui/item';
-import { Copy, Trash2, Check } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { Button } from './ui/button';
 
 export function Woop({
   woop,
-  encryptedValue,
-  removeWoop,
 }: {
   woop: string;
   encryptedValue: string;
-  removeWoop: (encryptedValue: string) => Promise<void>;
 }) {
   const [copied, setCopied] = useState(false);
   const itemRef = useRef<HTMLDivElement>(null);
@@ -24,14 +21,6 @@ export function Woop({
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const onDelete = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    const next = itemRef.current?.nextElementSibling as HTMLElement;
-    const prev = itemRef.current?.previousElementSibling as HTMLElement;
-    removeWoop(encryptedValue);
-    (next ?? prev)?.focus();
-  };
-
   return (
     <Item
       ref={itemRef}
@@ -39,9 +28,6 @@ export function Woop({
       onKeyDown={e => {
         if (e.key === 'Enter') {
           onCopy();
-        }
-        if (e.key === 'Backspace') {
-          onDelete();
         }
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -67,13 +53,6 @@ export function Woop({
           className={copied ? 'text-green-600 dark:text-green-400' : ''}
         >
           {copied ? <Check className='size-4' /> : <Copy className='size-4' />}
-        </Button>
-        <Button
-          variant='ghost'
-          size='icon-sm'
-          onClick={onDelete}
-        >
-          <Trash2 className='size-4' />
         </Button>
       </ItemActions>
     </Item>
