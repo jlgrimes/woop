@@ -8,6 +8,49 @@ import { WoopList } from '@/components/woop-list';
 import { EmptyState } from '@/components/empty-state';
 import { Header } from '@/components/header';
 
+interface WoopData {
+  text: string;
+  expiresAt: number;
+}
+
+interface WoopItem {
+  text: string;
+  encryptedValue: string;
+}
+
+function processWoops(encryptedWoops: string[], ip: string): { woops: WoopItem[]; expiredEncrypted: string[] } {
+  const now = Date.now();
+  const woops: WoopItem[] = [];
+  const expiredEncrypted: string[] = [];
+
+  for (const encrypted of encryptedWoops) {
+    try {
+      const decrypted = decrypt(encrypted, ip);
+      try {
+        const data: WoopData = JSON.parse(decrypted);
+        if (data.expiresAt > now) {
+          woops.push({
+            text: data.text,
+            encryptedValue: encrypted,
+          });
+        } else {
+          expiredEncrypted.push(encrypted);
+        }
+      } catch {
+        // Legacy format without expiration - show for backwards compatibility
+        woops.push({
+          text: decrypted,
+          encryptedValue: encrypted,
+        });
+      }
+    } catch {
+      // Skip messages that fail to decrypt
+    }
+  }
+
+  return { woops, expiredEncrypted };
+}
+
 export default async function Home() {
   const headersList = await headers();
   const ip =
@@ -17,23 +60,27 @@ export default async function Home() {
 
   const hashedIP = hashIP(ip);
   const encryptedWoops = await redis.lrange(hashedIP, 0, -1);
-  const woops = encryptedWoops.map(encrypted => ({
-    text: decrypt(encrypted, ip),
-    encryptedValue: encrypted,
-  }));
 
-  async function removeWoop(encryptedValue: string) {
-    'use server';
+  // Process woops and filter expired ones
+  const { woops, expiredEncrypted } = processWoops(encryptedWoops, ip);
+
+  // Clean up expired messages
+  if (expiredEncrypted.length > 0) {
     const hashedKey = hashIP(ip);
-    await redis.lrem(hashedKey, 1, encryptedValue);
-    revalidatePath('/');
+    for (const encrypted of expiredEncrypted) {
+      await redis.lrem(hashedKey, 1, encrypted);
+    }
   }
 
-  async function addWoop(text: string) {
+  async function addWoop(text: string, expirationMinutes: number = 10) {
     'use server';
     if (!text.trim()) return;
     const hashedKey = hashIP(ip);
-    const encryptedText = encrypt(text, ip);
+    const woopData: WoopData = {
+      text,
+      expiresAt: Date.now() + expirationMinutes * 60 * 1000,
+    };
+    const encryptedText = encrypt(JSON.stringify(woopData), ip);
     await redis.lpush(hashedKey, encryptedText);
     revalidatePath('/');
   }
@@ -48,7 +95,7 @@ export default async function Home() {
         </header>
         <main className='mx-auto max-w-4xl px-6 py-6 flex-1 w-full overflow-auto'>
           {woops.length > 0 ? (
-            <WoopList woops={woops} removeWoop={removeWoop} />
+            <WoopList woops={woops} />
           ) : (
             <EmptyState />
           )}

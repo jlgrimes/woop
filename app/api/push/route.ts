@@ -3,6 +3,12 @@ import { redis } from '@/lib/redis';
 import { hashIP, encrypt } from '@/lib/crypto';
 
 const TTL_SECONDS = 7 * 24 * 60 * 60; // 7 days
+const DEFAULT_EXPIRATION_MINUTES = 10;
+
+interface WoopData {
+  text: string;
+  expiresAt: number;
+}
 
 export async function POST(request: Request) {
   const headersList = await headers();
@@ -13,13 +19,19 @@ export async function POST(request: Request) {
 
   const body = await request.json();
   const msg = body.msg?.trim();
+  const expirationMinutes = body.expirationMinutes ?? DEFAULT_EXPIRATION_MINUTES;
 
   if (!msg) {
     return new Response('missing msg', { status: 400 });
   }
 
+  const woopData: WoopData = {
+    text: msg,
+    expiresAt: Date.now() + expirationMinutes * 60 * 1000,
+  };
+
   const hashedKey = hashIP(ip);
-  const encryptedText = encrypt(msg, ip);
+  const encryptedText = encrypt(JSON.stringify(woopData), ip);
   await redis.lpush(hashedKey, encryptedText);
   await redis.expire(hashedKey, TTL_SECONDS);
 

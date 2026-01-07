@@ -7,10 +7,9 @@ interface WoopItem {
 
 interface WoopListProps {
   woops: WoopItem[];
-  removeWoop: (encryptedValue: string) => Promise<void>;
 }
 
-export function WoopList({ woops, removeWoop }: WoopListProps) {
+export function WoopList({ woops }: WoopListProps) {
   return (
     <div className="flex flex-col gap-2" role="list">
       {woops.map((woop) => (
@@ -18,7 +17,6 @@ export function WoopList({ woops, removeWoop }: WoopListProps) {
           key={woop.encryptedValue}
           woop={woop.text}
           encryptedValue={woop.encryptedValue}
-          removeWoop={removeWoop}
         />
       ))}
     </div>
