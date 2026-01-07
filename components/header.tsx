@@ -12,6 +12,7 @@ import { AnimatedNavLink } from './animated-nav-link';
 import { TerminalIcon } from './ui/terminal';
 import { FileStackIcon } from './ui/file-stack';
 import { ShieldCheckIcon } from './ui/shield-check';
+import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
   return (
@@ -19,35 +20,38 @@ export function Header() {
       <Link href="/" className="text-base font-semibold hover:opacity-70 transition-opacity">
         woop
       </Link>
-      <NavigationMenu className="-my-1.5">
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="w-36">
-                <li>
-                  <AnimatedNavLink href="/about">
-                    <FileStackIcon />
-                    About
-                  </AnimatedNavLink>
-                </li>
-                <li>
-                  <AnimatedNavLink href="/cli">
-                    <TerminalIcon />
-                    CLI
-                  </AnimatedNavLink>
-                </li>
-                <li>
-                  <AnimatedNavLink href="/security">
-                    <ShieldCheckIcon />
-                    Security
-                  </AnimatedNavLink>
-                </li>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+      <div className="flex items-center gap-1">
+        <ThemeToggle />
+        <NavigationMenu className="-my-1.5">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="w-36">
+                  <li>
+                    <AnimatedNavLink href="/about">
+                      <FileStackIcon />
+                      About
+                    </AnimatedNavLink>
+                  </li>
+                  <li>
+                    <AnimatedNavLink href="/cli">
+                      <TerminalIcon />
+                      CLI
+                    </AnimatedNavLink>
+                  </li>
+                  <li>
+                    <AnimatedNavLink href="/security">
+                      <ShieldCheckIcon />
+                      Security
+                    </AnimatedNavLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
     </header>
   );
 }

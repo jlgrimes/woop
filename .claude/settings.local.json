@@ -20,7 +20,9 @@
       "Bash(/Users/jaredgrimes/code/woop/components/ui/placeholders-and-vanish-input.tsx )",
       "Bash(/Users/jaredgrimes/code/woop/components/ui/text-generate-effect.tsx )",
       "Bash(/Users/jaredgrimes/code/woop/components/ui/text-scramble.tsx )",
-      "Bash(/Users/jaredgrimes/code/woop/components/motion-primitives/text-morph.tsx)"
+      "Bash(/Users/jaredgrimes/code/woop/components/motion-primitives/text-morph.tsx)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue close:*)"
     ]
   }
 }

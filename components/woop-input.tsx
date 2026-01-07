@@ -7,8 +7,12 @@ export interface WoopInputHandle {
   getValue: () => string;
 }
 
-export const WoopInput = forwardRef<WoopInputHandle>(function WoopInput(
-  _props,
+interface WoopInputProps {
+  disabled?: boolean;
+}
+
+export const WoopInput = forwardRef<WoopInputHandle, WoopInputProps>(function WoopInput(
+  { disabled },
   ref
 ) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -26,6 +30,7 @@ export const WoopInput = forwardRef<WoopInputHandle>(function WoopInput(
       minRows={1}
       maxRows={6}
       autoFocus
+      disabled={disabled}
       onKeyDown={e => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();

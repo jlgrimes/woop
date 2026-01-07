@@ -7,6 +7,7 @@ import { WoopForm } from '@/components/woop-form';
 import { WoopList } from '@/components/woop-list';
 import { EmptyState } from '@/components/empty-state';
 import { Header } from '@/components/header';
+import { ShortcutHints } from '@/components/shortcut-hints';
 
 interface WoopData {
   text: string;
@@ -16,6 +17,7 @@ interface WoopData {
 interface WoopItem {
   text: string;
   encryptedValue: string;
+  expiresAt?: number;
 }
 
 function processWoops(encryptedWoops: string[], ip: string): { woops: WoopItem[]; expiredEncrypted: string[] } {
@@ -32,6 +34,7 @@ function processWoops(encryptedWoops: string[], ip: string): { woops: WoopItem[]
           woops.push({
             text: data.text,
             encryptedValue: encrypted,
+            expiresAt: data.expiresAt,
           });
         } else {
           expiredEncrypted.push(encrypted);
@@ -87,25 +90,26 @@ export default async function Home() {
 
   return (
     <WoopProvider addWoop={addWoop}>
-      <div className='min-h-screen bg-zinc-50 font-sans dark:bg-black flex flex-col'>
-        <header className='w-full border-b border-border/40 bg-zinc-50 dark:bg-black'>
+      <div className='min-h-screen bg-gradient-subtle font-sans flex flex-col'>
+        <header className='w-full border-b border-border/40 glass sticky top-0 z-50'>
           <div className='mx-auto max-w-4xl px-6 py-3'>
             <Header />
           </div>
         </header>
-        <main className='mx-auto max-w-4xl px-6 py-6 flex-1 w-full overflow-auto'>
+        <main id='main-content' className='mx-auto max-w-4xl px-6 py-6 flex-1 w-full overflow-auto'>
           {woops.length > 0 ? (
             <WoopList woops={woops} />
           ) : (
             <EmptyState />
           )}
         </main>
-        <div className='w-full bg-zinc-50 dark:bg-black pb-8'>
+        <div className='w-full glass border-t border-border/40 pb-8 sticky bottom-0'>
           <div className='mx-auto max-w-4xl px-6 py-4 space-y-2'>
             <span className='text-xs text-muted-foreground'>Connected to <span className='font-mono'>{ip}</span></span>
             <WoopForm />
           </div>
         </div>
+        <ShortcutHints />
       </div>
     </WoopProvider>
   );

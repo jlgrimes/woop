@@ -8,7 +8,7 @@ import { ExpirationSelector } from './expiration-selector';
 
 export function WoopForm() {
   const formRef = useRef<HTMLFormElement>(null);
-  const { addWoop, expirationMinutes, setExpirationMinutes } = useWoop();
+  const { addWoop, expirationMinutes, setExpirationMinutes, isLoading } = useWoop();
 
   const handleSubmit = async (formData: FormData) => {
     const woop = formData.get('woop') as string;
@@ -19,8 +19,8 @@ export function WoopForm() {
 
   return (
     <form ref={formRef} className='flex gap-2 w-full' action={handleSubmit}>
-      <WoopInput />
-      <ExpirationSelector value={expirationMinutes} onChange={setExpirationMinutes} />
+      <WoopInput disabled={isLoading} />
+      <ExpirationSelector value={expirationMinutes} onChange={setExpirationMinutes} disabled={isLoading} />
       <AddButton />
     </form>
   );

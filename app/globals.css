@@ -49,6 +49,14 @@
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
+
+  /* Glassmorphism tokens */
+  --glass-bg: oklch(1 0 0 / 70%);
+  --glass-border: oklch(0 0 0 / 8%);
+  --glass-shadow: 0 8px 32px oklch(0 0 0 / 0.08);
+
+  /* Gradient accent */
+  --gradient-primary: linear-gradient(135deg, oklch(0.6 0.12 250) 0%, oklch(0.55 0.15 280) 100%);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -83,6 +91,14 @@
 
 .dark {
   --background: oklch(0.145 0 0);
+
+  /* Dark glassmorphism tokens */
+  --glass-bg: oklch(0.2 0 0 / 60%);
+  --glass-border: oklch(1 0 0 / 10%);
+  --glass-shadow: 0 8px 32px oklch(0 0 0 / 0.3);
+
+  /* Dark gradient accent */
+  --gradient-primary: linear-gradient(135deg, oklch(0.5 0.15 250) 0%, oklch(0.45 0.18 280) 100%);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -165,4 +181,50 @@
     transform: scale(0.95);
     opacity: 0;
   }
+}
+
+/* Glass utility */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Gradient text */
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle animated gradient background */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.bg-gradient-subtle {
+  background: linear-gradient(
+    -45deg,
+    oklch(0.99 0.005 250),
+    oklch(0.98 0.01 280),
+    oklch(0.99 0.005 200),
+    oklch(1 0 0)
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 20s ease infinite;
+}
+
+.dark .bg-gradient-subtle {
+  background: linear-gradient(
+    -45deg,
+    oklch(0.15 0.01 250),
+    oklch(0.14 0.015 280),
+    oklch(0.15 0.01 200),
+    oklch(0.145 0 0)
+  );
+  background-size: 400% 400%;
 }

@@ -14,15 +14,17 @@ export type ExpirationMinutes = 5 | 10 | 20;
 interface ExpirationSelectorProps {
   value: ExpirationMinutes;
   onChange: (value: ExpirationMinutes) => void;
+  disabled?: boolean;
 }
 
-export function ExpirationSelector({ value, onChange }: ExpirationSelectorProps) {
+export function ExpirationSelector({ value, onChange, disabled }: ExpirationSelectorProps) {
   return (
     <Select
       value={String(value)}
       onValueChange={(v) => onChange(Number(v) as ExpirationMinutes)}
+      disabled={disabled}
     >
-      <SelectTrigger className="w-[130px] h-full">
+      <SelectTrigger className="w-[130px] h-full" aria-label="Message expiration time">
         <Clock className="h-4 w-4 opacity-50 shrink-0" />
         <SelectValue />
       </SelectTrigger>

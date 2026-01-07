@@ -1,8 +1,13 @@
+'use client';
+
+import { motion, AnimatePresence } from 'motion/react';
 import { Woop } from './woop';
+import { staggerContainer, woopItemVariants } from '@/lib/animations';
 
 interface WoopItem {
   text: string;
   encryptedValue: string;
+  expiresAt?: number;
 }
 
 interface WoopListProps {
@@ -11,14 +16,33 @@ interface WoopListProps {
 
 export function WoopList({ woops }: WoopListProps) {
   return (
-    <div className="flex flex-col gap-2" role="list">
-      {woops.map((woop) => (
-        <Woop
-          key={woop.encryptedValue}
-          woop={woop.text}
-          encryptedValue={woop.encryptedValue}
-        />
-      ))}
-    </div>
+    <motion.div
+      className="flex flex-col gap-2"
+      role="list"
+      aria-label="Clipboard items"
+      aria-live="polite"
+      variants={staggerContainer}
+      initial="initial"
+      animate="animate"
+    >
+      <AnimatePresence mode="popLayout">
+        {woops.map((woop) => (
+          <motion.div
+            key={woop.encryptedValue}
+            variants={woopItemVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            layout
+          >
+            <Woop
+              woop={woop.text}
+              encryptedValue={woop.encryptedValue}
+              expiresAt={woop.expiresAt}
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
   );
 }
