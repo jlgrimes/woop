@@ -4,7 +4,7 @@
 
 ## What is woop?
 
-woop is a dead-simple clipboard sharing tool. It uses your public IP address as a key to store and retrieve text snippets via Redis. Open woop on any device on your network, and your woops are there waiting.
+woop is a dead-simple clipboard sharing tool. It uses your public IP address as a key to store and retrieve text snippets and small image/file attachments via Redis. Open woop on any device on your network, and your woops are there waiting.
 
 ## Principles
 
@@ -17,13 +17,18 @@ woop is a dead-simple clipboard sharing tool. It uses your public IP address as 
 
 1. Visit woop.foo
 2. Your public IP is detected automatically
-3. Type text and hit Add (or press Enter)
+3. Type text and hit Add (or press Enter). You can also attach an image/file via the paperclip button.
 4. Click any woop to copy it to your clipboard
 5. Open woop on another device on your network - your woops are there
 
 ## Data retention
 
 Woops automatically expire after **7 days** of inactivity. Each time you add a new woop, the expiration timer resets. This keeps storage clean and ensures your data doesn't persist indefinitely.
+
+### Attachments
+
+- Attachments are supported up to **5MB** right now.
+- Files and images are encrypted and stored with your other woops.
 
 ## Tech stack
 

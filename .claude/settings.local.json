@@ -22,7 +22,10 @@
       "Bash(/Users/jaredgrimes/code/woop/components/ui/text-scramble.tsx )",
       "Bash(/Users/jaredgrimes/code/woop/components/motion-primitives/text-morph.tsx)",
       "Bash(gh issue list:*)",
-      "Bash(gh issue close:*)"
+      "Bash(gh issue close:*)",
+      "Bash(find:*)",
+      "Bash(npm run test:*)",
+      "Bash(lsof:*)"
     ]
   }
 }

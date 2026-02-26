@@ -5,8 +5,13 @@ import { Woop } from './woop';
 import { staggerContainer, woopItemVariants } from '@/lib/animations';
 
 interface WoopItem {
+  kind: 'text' | 'image' | 'file';
   text: string;
   encryptedValue: string;
+  attachmentUrl?: string;
+  attachmentName?: string;
+  attachmentMimeType?: string;
+  attachmentSize?: number;
   expiresAt?: number;
 }
 
@@ -36,8 +41,12 @@ export function WoopList({ woops }: WoopListProps) {
             layout
           >
             <Woop
-              woop={woop.text}
-              encryptedValue={woop.encryptedValue}
+              kind={woop.kind}
+              text={woop.text}
+              attachmentUrl={woop.attachmentUrl}
+              attachmentName={woop.attachmentName}
+              attachmentMimeType={woop.attachmentMimeType}
+              attachmentSize={woop.attachmentSize}
               expiresAt={woop.expiresAt}
             />
           </motion.div>

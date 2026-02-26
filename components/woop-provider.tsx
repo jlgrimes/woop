@@ -7,6 +7,7 @@ import type { ExpirationMinutes } from './expiration-selector';
 
 interface WoopContextValue {
   addWoop: (text: string, expirationMinutes?: number) => Promise<void>;
+  addWoopFromFormData: (formData: FormData) => Promise<void>;
   expirationMinutes: ExpirationMinutes;
   setExpirationMinutes: (minutes: ExpirationMinutes) => void;
   isLoading: boolean;
@@ -25,9 +26,10 @@ export function useWoop() {
 interface WoopProviderProps {
   children: React.ReactNode;
   addWoop: (text: string, expirationMinutes?: number) => Promise<void>;
+  addWoopFromFormData: (formData: FormData) => Promise<void>;
 }
 
-export function WoopProvider({ children, addWoop }: WoopProviderProps) {
+export function WoopProvider({ children, addWoop, addWoopFromFormData }: WoopProviderProps) {
   const [expirationMinutes, setExpirationMinutes] = useState<ExpirationMinutes>(10);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -44,8 +46,28 @@ export function WoopProvider({ children, addWoop }: WoopProviderProps) {
     }
   };
 
+  const handleAddWoopFromFormData = async (formData: FormData) => {
+    setIsLoading(true);
+    try {
+      await addWoopFromFormData(formData);
+      toast({ title: 'Woop added', variant: 'success', duration: 2000 });
+    } catch {
+      toast({ title: 'Failed to add woop', variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <WoopContext.Provider value={{ addWoop: handleAddWoop, expirationMinutes, setExpirationMinutes, isLoading }}>
+    <WoopContext.Provider
+      value={{
+        addWoop: handleAddWoop,
+        addWoopFromFormData: handleAddWoopFromFormData,
+        expirationMinutes,
+        setExpirationMinutes,
+        isLoading,
+      }}
+    >
       <KeyboardShortcuts onPaste={text => handleAddWoop(text)}>
         {children}
       </KeyboardShortcuts>
